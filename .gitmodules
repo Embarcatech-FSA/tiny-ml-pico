@@ -1,3 +1,0 @@
-[submodule "lib/pico-tflmicro"]
-	path = lib/pico-tflmicro
-	url = https://github.com/raspberrypi/pico-tflmicro.git
