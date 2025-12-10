@@ -150,15 +150,91 @@ int main() {
 
     ssd1306_fill(&disp, false);
 
-    // Linha 1: Confirma que o processamento ocorreu
-    ssd1306_draw_string(&disp, "Inferencia", 25, 10);
-    ssd1306_draw_string(&disp, "Realizada!", 25, 22);
+    // Dimensões da tabela
+    int cell_w  = 35;
+    int cell_h  = 18;
+    int start_x = 0;
+    int start_y = 10;
 
-    // Linha 2: Instrui o usuário a olhar o computador
-    ssd1306_draw_string(&disp, "Veja o Terminal", 2, 40);
+    ssd1306_draw_string(&disp, "Matriz Confusao", 5, 0);
 
-    // Atualiza o display
+    ssd1306_line(&disp,
+        start_x,
+        start_y + 0 * cell_h,
+        start_x + cell_w * NUM_CLASSES,
+        start_y + 0 * cell_h,
+        true);
+
+    ssd1306_line(&disp,
+        start_x,
+        start_y + 1 * cell_h,
+        start_x + cell_w * NUM_CLASSES,
+        start_y + 1 * cell_h,
+        true);
+
+    ssd1306_line(&disp,
+        start_x,
+        start_y + 2 * cell_h,
+        start_x + cell_w * NUM_CLASSES,
+        start_y + 2 * cell_h,
+        true);
+
+    ssd1306_line(&disp,
+        start_x,
+        start_y + 3 * cell_h - 3,
+        start_x + cell_w * NUM_CLASSES,
+        start_y + 3 * cell_h - 3,
+        true);
+
+
+    int y_end = start_y + cell_h * NUM_CLASSES - 3;
+
+    ssd1306_line(&disp,
+        start_x + 0 * cell_w,
+        start_y,
+        start_x + 0 * cell_w,
+        y_end,
+        true);
+
+    ssd1306_line(&disp,
+        start_x + 1 * cell_w,
+        start_y,
+        start_x + 1 * cell_w,
+        y_end,
+        true);
+
+    ssd1306_line(&disp,
+        start_x + 2 * cell_w,
+        start_y,
+        start_x + 2 * cell_w,
+        y_end,
+        true);
+
+    ssd1306_line(&disp,
+        start_x + 3 * cell_w,
+        start_y,
+        start_x + 3 * cell_w,
+        y_end,
+        true);
+
+
+    // --- Valores nas células ---
+    for (int r = 0; r < NUM_CLASSES; r++) {
+        for (int c = 0; c < NUM_CLASSES; c++) {
+
+            char buf[6];
+            sprintf(buf, "%d", conf_matrix[r][c]);
+
+            int text_x = start_x + c * cell_w + 8;
+            int text_y = start_y + r * cell_h + 6;
+
+            ssd1306_draw_string(&disp, buf, text_x, text_y);
+        }
+    }
+
     ssd1306_send_data(&disp);
+
+
     printf("\nFim da inferencia. Loop infinito.\n");
 
     // Loop infinito - evita reset do programa
